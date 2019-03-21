@@ -11,7 +11,7 @@ x = 0
 
 for i in res :
         x+=1
-        div = i.find("div",class_="hJND5c") #提取所有div
+        div = i.find("div",class_="hJND5c") #提取div
         if div != None:
             print("第", x, "筆")
             cite = div.find("cite")
