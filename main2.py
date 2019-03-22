@@ -18,6 +18,6 @@ try:
         if "https://" not in url :
             url = "https://" + url
         print("標題:" , title)
-        print("網址:",url)
+        print("網址: ",url)
 except AttributeError:
     print('none')
