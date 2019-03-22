@@ -35,10 +35,15 @@ def ParseQuestion(q) :
         if match:
             q = q.replace(a, urllib.parse.quote(a))
     q = q.replace(" ","%20")
+    q = q.replace("【","%E3%80%90")  #【 coding
+    q = q.replace("】", "%E3%80%91") # 】 coding
+    q = q.replace("。", "%E3%80%82") # 。 coding
+    q = q.replace("，", "%EF%BC%8C") # ， coding
+    q = q.replace("、", "%E3%80%81") # 、 coding
     return q
 
 if __name__ == '__main__' :
     zh_pattern = re.compile(u'[\u4e00-\u9fa5]+') # all Chinese with regular expressions
-    question  = "周杰倫" #input search content
+    question  = "台北?美食" #input search content
     question  = ParseQuestion(question)
     Search(question)
