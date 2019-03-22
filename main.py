@@ -1,29 +1,32 @@
-import requests
+import urllib.parse  #url coding
+import re #Match all Chinese with regular expressions
 from urllib.request import urlopen,Request
-import urllib.parse  #url編碼
-import re #使用正規表達匹配所有中文
 from bs4 import BeautifulSoup
+
+#Search google
 def Search(question) :
     search_url = "https://www.google.com/search?q=" + question
     r = Request(search_url)
     r.add_header("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)")
-    response = urlopen(r)
-    soup = BeautifulSoup(response, 'html.parser')
-    res = soup.find_all("div", class_="g")
-    x = 0
-    for i in res:
-        x += 1
-        div = i.find("div", class_="hJND5c")  # 提取div
-        print(div)
-        if div != None:
-            print("第", x, "筆")
-            cite = div.find("cite")
-            if "https://" not in cite.text:
-                print("https://" + cite.text)
+    response = urlopen(r) #open url
+    soup = BeautifulSoup(response, 'html.parser') #parse response
+    div_g = soup.find_all("div", class_="g")
+    count = 0
+    for i in div_g:
+        count += 1
+        div = i.find("div", class_="hJND5c")  # get <div>
+        title = i.find("h3")
+        if div != None:  #get information is not None
+            print("第", count, "筆資料")  #print information count
+            print("文章標題:",title.text.strip()) #print title and remove all space
+            cite = div.find("cite") #search url
+            citeTextParsed = ParseQuestion(cite.text) #parse url
+            if "https://" not in citeTextParsed:
+                print("https://" + citeTextParsed)
             else :
-                print(cite.text)
+                print(citeTextParsed)
         else:
-            x -= 1
+            count -= 1
 def ParseQuestion(q) :
     for a in q:
         match = zh_pattern.search(a)
@@ -31,11 +34,12 @@ def ParseQuestion(q) :
             q = q.replace(a, urllib.parse.quote(a))
     q = q.replace(" ","%20")
     return q  # 將中文編碼
-#main
-zh_pattern = re.compile(u'[\u4e00-\u9fa5]+')  #所有中文的正規表示式
-question  = "台北-展覽" #丟出要搜尋的內容
-aa = ParseQuestion(question)
-Search(aa)
+
+if __name__ == '__main__' :
+    zh_pattern = re.compile(u'[\u4e00-\u9fa5]+')  #所有中文的正規表示式
+    question  = "周杰倫" #丟出要搜尋的內容
+    question  = ParseQuestion(question)
+    Search(question)
 
 
 
