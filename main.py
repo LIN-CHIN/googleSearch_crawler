@@ -27,6 +27,7 @@ def Search(question) :
                 print(citeTextParsed)
         else:
             count -= 1
+
 #url coding
 def ParseQuestion(q) :
     for a in q:
@@ -37,10 +38,7 @@ def ParseQuestion(q) :
     return q
 
 if __name__ == '__main__' :
-    zh_pattern = re.compile(u'[\u4e00-\u9fa5]+')  # all Chinese with regular expressions
+    zh_pattern = re.compile(u'[\u4e00-\u9fa5]+') # all Chinese with regular expressions
     question  = "周杰倫" #input search content
     question  = ParseQuestion(question)
     Search(question)
-
-
-
