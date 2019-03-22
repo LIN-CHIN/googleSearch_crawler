@@ -18,20 +18,24 @@ def Search(question) :
         if div != None:
             print("第", x, "筆")
             cite = div.find("cite")
-            print(cite.text)
+            if "https://" not in cite.text:
+                print("https://" + cite.text)
+            else :
+                print(cite.text)
         else:
             x -= 1
 def ParseQuestion(q) :
-    return urllib.parse.quote(q)  # 將中文編碼
+    for a in q:
+        match = zh_pattern.search(a)
+        if match:
+            q = q.replace(a, urllib.parse.quote(a))
+    q = q.replace(" ","%20")
+    return q  # 將中文編碼
 #main
 zh_pattern = re.compile(u'[\u4e00-\u9fa5]+')  #所有中文的正規表示式
-question  = "電影" #丟出要搜尋的內容
-match = zh_pattern.search(question)
-if match :
-    question = ParseQuestion(question)
-    Search(question)
-else :
-    Search(question)
+question  = "台北-展覽" #丟出要搜尋的內容
+aa = ParseQuestion(question)
+Search(aa)
 
 
 
